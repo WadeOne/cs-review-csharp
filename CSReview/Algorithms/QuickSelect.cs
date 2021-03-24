@@ -11,12 +11,11 @@ namespace CSReview.Algorithms
 
         private static int RecursiveImpl(int[] arr, int k, int left, int right)
         {
-            if (left > right) return arr[left];
+            if (left == right) return arr[left];
 
-            var pivot = LomutoPartition(arr, left, right);
+            var pivot = HoarePartition(arr, left, right);
 
-            if (pivot == k) return arr[pivot];
-            if (k < pivot) return RecursiveImpl(arr, k, left, pivot - 1);
+            if (k <= pivot) return RecursiveImpl(arr, k, left, pivot - 0);
             return RecursiveImpl(arr, k, pivot + 1, right);
         }
 
@@ -61,22 +60,22 @@ namespace CSReview.Algorithms
         private static int HoarePartition(int[] arr, int left, int right)
         {
             var pivot = arr[left];
-            var i = left;
-            var j = right;
+            var i = left - 1;
+            var j = right + 1;
             while (true)
             {
-                while (arr[i] < pivot)
-                {
+                do {
                     i++;
-                }
+                } while (arr[i] < pivot);
 
-                while (arr[j] > pivot)
-                {
+                do {
                     j--;
-                }
+                } while (arr[j] > pivot);
 
-                if (j <= i)
+                if (i >= j)
+                {
                     return j;
+                }
 
                 Swap(arr, i, j);
             }
