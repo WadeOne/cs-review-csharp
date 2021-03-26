@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace CSReview.DataStructures
@@ -9,19 +8,20 @@ namespace CSReview.DataStructures
         private T[] _queue;
         private readonly int _size;
 
-        private int _head = 0;
-        private int _tail = 0;
-        private bool isFull = false;
+        private int _head;
+        private int _tail;
+        private bool _isFull;
 
         public Queue(int size)
         {
             _size = size;
+            _head = 0;
             _queue = new T[_size];
         }
 
         public void Enqueue(T elem)
         {
-            if (isFull) throw new OverflowException();
+            if (_isFull) throw new OverflowException();
 
             _queue[_tail] = elem;
 
@@ -32,7 +32,7 @@ namespace CSReview.DataStructures
             else
             {
                 _tail = 0;
-                if (_head == 0) isFull = true;
+                if (_head == 0) _isFull = true;
             }
         }
 
@@ -50,7 +50,7 @@ namespace CSReview.DataStructures
                 _head = 0;
             }
 
-            isFull = false;
+            _isFull = false;
 
             return toReturn;
         }
@@ -71,11 +71,13 @@ namespace CSReview.DataStructures
         {
             _head = 0;
             _tail = 0;
-            isFull = false;
+            _isFull = false;
         }
+        
+        
     }
 
-    public class QueueTests
+    public class Queue
     {
         [Fact]
         public void BordersTest()

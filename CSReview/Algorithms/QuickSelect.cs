@@ -79,6 +79,8 @@ namespace CSReview.Algorithms
 
                 Swap(arr, i, j);
             }
+         
+            
         }
 
         private static void Swap(int[] arr, int i, int j)
@@ -87,15 +89,12 @@ namespace CSReview.Algorithms
             arr[i] = arr[j];
             arr[j] = temp;
         }
-    }
-
-    public class Tests
-    {
+        
         [Theory]
         [InlineData(new[] {1, 5, 7, 8, 2, 9, 3, 4, 10, 6}, 2, 3)]
         [InlineData(new[] {1, 5, 7, 8, 2, 9, 3, 4, 10, 6}, 1, 2)]
         [InlineData(new[] {1, 5, 7, 8, 2, 9, 3, 4, 10, 6}, 0, 1)]
-        public void IsCorrect(int[] arr, int k, int expected)
+        public static void IsCorrect(int[] arr, int k, int expected)
         {
             var recursiveResult = QuickSelect.Recursive(arr, k);
             Assert.Equal(expected, recursiveResult);
@@ -103,4 +102,6 @@ namespace CSReview.Algorithms
             Assert.Equal(recursiveResult, iterativeResult);
         }
     }
+
+    
 }

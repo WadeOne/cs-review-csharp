@@ -7,12 +7,11 @@ namespace CSReview.DataStructures
     {
         private readonly int _size = -1;
         private T[] _stack;
-        private const int _defaultSize = 256;
+        private const int DefaultSize = 256;
         private int _stackTop = 0;
 
         public int Size => _stack.Length;
-        public int Count => _stackTop;
-        
+
         public Stack(int size)
         {
             _size = size;
@@ -21,7 +20,7 @@ namespace CSReview.DataStructures
 
         public Stack()
         {
-            _stack = new T[_defaultSize];
+            _stack = new T[DefaultSize];
         }
 
         public void Push(T elem)
@@ -73,8 +72,9 @@ namespace CSReview.DataStructures
         }
     }
 
-    public class Tests
+    public class Stack
     {
+        [Trait("Category", "Stack")]
         [Fact]
         public void BordersTest()
         {
@@ -82,11 +82,12 @@ namespace CSReview.DataStructures
 
             Assert.Throws<InvalidOperationException>(() => stack.Peek());
             Assert.Throws<InvalidOperationException>(() => stack.Pop());
-            
+
             stack.Push(42);
             Assert.Throws<StackOverflowException>(() => stack.Push(69));
         }
 
+        [Trait("Category", "Stack")]
         [Fact]
         public void OperationsAreConsistent_FixedSizeStack()
         {
@@ -103,6 +104,7 @@ namespace CSReview.DataStructures
             }
         }
 
+        [Trait("Category", "Stack")]
         [Fact]
         public void OperationsAreConsistent_DynamicallySizeStack()
         {
@@ -119,6 +121,7 @@ namespace CSReview.DataStructures
             }
         }
 
+        [Trait("Category", "Stack")]
         [Fact]
         public void DynamicallySizedStack_ResizesProperly()
         {
@@ -129,6 +132,7 @@ namespace CSReview.DataStructures
             {
                 stack.Push(i);
             }
+
             Assert.Equal(defaultSize << 2, stack.Size);
 
             stack.Pop();
