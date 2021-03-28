@@ -35,10 +35,13 @@ namespace CSReview.Algorithms
             {
                 // var pivot = LomutoPartition(arr, left, right);
                 // SortInner(arr, left, pivot - 1);
+                // SortInner(arr, pivot + 1, right);
 
+
+                //If we use the rightmost element in the Hoare's partition, then
+                //we have to include pivot in the bigger half since pivot can end up anywhere in it
                 var pivot = HoarePartition(arr, left, right);
                 SortInner(arr, left, pivot - 1);
-
                 SortInner(arr, pivot, right);
             }
         }
