@@ -24,6 +24,8 @@ namespace CSReview.Algorithms
 
             void Relax(int u, int v, int weight)
             {
+                if (distances[u - 1] == null) return;
+                
                 var newDistance = weight + (distances[u - 1] ?? 0); 
                 if (distances[v - 1] == null || distances[v - 1] > newDistance)
                 {
