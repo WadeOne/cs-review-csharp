@@ -80,11 +80,16 @@ namespace CSReview.DataStructures
             InorderTraversal(node.Right, processNode);
         }
 
-        public BSTreeNode<TKey,TValue> Min()
+        public BSTreeNode<TKey, TValue> Min()
         {
-            if (Root == null) return null;
+            return Min(Root);
+        }
 
-            var node = Root;
+        public BSTreeNode<TKey,TValue> Min(BSTreeNode<TKey,TValue> root)
+        {
+            if (root == null) return null;
+
+            var node = root;
             while (node.Left != null)
             {
                 node = node.Left;
@@ -112,9 +117,25 @@ namespace CSReview.DataStructures
             return node;
         }
 
-        // public BSTreeNode<TKey,TValue> Successor(TKey key)
-        // {
-        // }
+        public BSTreeNode<TKey,TValue> Successor(TKey key)
+        {
+            var node = SearchByKey(key);
+            if (node == null) return null;
+
+            if (node.Right != null)
+            {
+                return Min(node.Right);
+            }
+
+            var parent = node.Parent;
+            while (parent != null && parent.Right == node)
+            {
+                node = parent;
+                parent = node.Parent;
+            }
+
+            return parent;
+        }
     }
     
     public class Tests
@@ -144,6 +165,16 @@ namespace CSReview.DataStructures
             Assert.Null(tree.SearchByKey(100));
         }
 
+        [Fact]
+        public void Successor()
+        {
+            var tree = CreateTree();
+            Assert.Equal(10, tree.Successor(9).Key);
+            Assert.Equal(5, tree.Successor(1).Key);
+            Assert.Equal(13, tree.Successor(10).Key);
+            Assert.Null(tree.Successor(20));
+        }
+
         private static BinarySearchTree<int,int> CreateTree()
         {
             var tree = new BinarySearchTree<int,int>(10);
@@ -164,5 +195,7 @@ namespace CSReview.DataStructures
         public BSTreeNode<TKey,TValue> Parent { get; set; }
         public BSTreeNode<TKey,TValue> Left { get; set; }
         public BSTreeNode<TKey,TValue> Right { get; set; }
+
+        public override string ToString() => $"{{Key: {Key}, Val: {Value}}}";
     }
 }
