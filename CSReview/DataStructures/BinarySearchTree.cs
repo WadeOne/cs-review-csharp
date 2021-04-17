@@ -1,7 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Xunit;
+
 
 namespace CSReview.DataStructures
 {
@@ -136,6 +136,57 @@ namespace CSReview.DataStructures
 
             return parent;
         }
+
+        public BSTreeNode<TKey, TValue> RemoveByKey(TKey key)
+        {
+            var node = SearchByKey(key);
+            if (node.Left == null)
+            {
+                Transplant(node, node.Right);
+                return node;
+            }
+
+            if (node.Right == null)
+            {
+                Transplant(node, node.Left);
+                return node;
+            }
+
+            var successor = Min(node.Right);
+            if (successor.Parent != node)
+            {
+                Transplant(successor, successor.Right);
+                successor.Right = node.Right;
+                successor.Right.Parent = successor;
+            }
+            Transplant(node, successor);
+            successor.Left = node.Left;
+            successor.Left.Parent = successor;
+            return node;
+
+        }
+
+        private void Transplant(BSTreeNode<TKey, TValue> target, BSTreeNode<TKey, TValue> toPlant)
+        {
+            //Root
+            if (target.Parent == null)
+            {
+                Root = toPlant;
+                return;
+            }
+
+            if (target.Parent.Left == target)
+            {
+                target.Parent.Left = toPlant;
+            }
+            else
+            {
+                target.Parent.Right = toPlant;
+            }
+
+            if (toPlant != null)
+                toPlant.Parent = target.Parent;
+        }
     }
     
     public class Tests
@@ -173,6 +224,20 @@ namespace CSReview.DataStructures
             Assert.Equal(5, tree.Successor(1).Key);
             Assert.Equal(13, tree.Successor(10).Key);
             Assert.Null(tree.Successor(20));
+        }
+
+        [Fact]
+        public void RemoveByKey()
+        {
+            var tree = CreateTree();
+            tree.RemoveByKey(5);
+            Assert.Null(tree.SearchByKey(5));
+            tree.RemoveByKey(10);
+            Assert.Null(tree.SearchByKey(10));
+            
+            var lst = new List<int>();
+            tree.InorderTraversal(x => lst.Add(x));
+            Assert.Equal(new int[]{1,9,13,15,20}, lst.ToArray());
         }
 
         private static BinarySearchTree<int,int> CreateTree()
